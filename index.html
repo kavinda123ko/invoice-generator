@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InvoiceForge — Invoice Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/preview.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <script src="js/invoice.js" defer></script>
+  <script src="js/pdf.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+
+  <!-- ── APP HEADER ── -->
+  <header class="app-header">
+    <div class="app-logo">
+      InvoiceForge <span class="logo-dot">&bull;</span>
+    </div>
+    <div class="header-right">
+      <span class="status-badge">
+        <span class="status-dot"></span> Live Preview
+      </span>
+      <span class="header-tag">v1.0</span>
+    </div>
+  </header>
+
+  <!-- ── MAIN CONTAINER ── -->
+  <div class="container">
+
+    <!-- ── FORM COLUMN ── -->
+    <div class="form-column">
+
+      <!-- 01 Invoice Details -->
+      <div class="panel">
+        <div class="panel-header"><span>01 /</span> Invoice Details</div>
+        <div class="panel-body">
+
+          <p class="section-title">Basic Info</p>
+          <div class="form-row">
+            <div class="field">
+              <label for="invNumber">Invoice Number</label>
+              <input type="text" id="invNumber" value="INV-0001"/>
+            </div>
+            <div class="field">
+              <label for="invDate">Invoice Date</label>
+              <input type="date" id="invDate"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="dueDate">Due Date</label>
+              <input type="date" id="dueDate"/>
+            </div>
+            <div class="field">
+              <label for="currency">Currency</label>
+              <select id="currency">
+                <option value="$">USD ($)</option>
+                <option value="&#8364;">EUR (&#8364;)</option>
+                <option value="&#163;">GBP (&#163;)</option>
+                <option value="&#8377;">INR (&#8377;)</option>
+                <option value="LKR">LKR (Rs)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+          <p class="section-title">From (Your Business)</p>
+          <div class="form-row single">
+            <div class="field">
+              <label for="fromName">Business Name</label>
+              <input type="text" id="fromName" placeholder="Your Company Ltd."/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="fromEmail">Email</label>
+              <input type="email" id="fromEmail" placeholder="hello@yourcompany.com"/>
+            </div>
+            <div class="field">
+              <label for="fromPhone">Phone</label>
+              <input type="text" id="fromPhone" placeholder="+1 000 000 0000"/>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="field">
+              <label for="fromAddress">Address</label>
+              <input type="text" id="fromAddress" placeholder="123 Business St, City"/>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+          <p class="section-title">Bill To (Client)</p>
+          <div class="form-row single">
+            <div class="field">
+              <label for="toName">Client Name</label>
+              <input type="text" id="toName" placeholder="Client Name or Company"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="toEmail">Client Email</label>
+              <input type="email" id="toEmail" placeholder="client@email.com"/>
+            </div>
+            <div class="field">
+              <label for="toPhone">Client Phone</label>
+              <input type="text" id="toPhone" placeholder="+1 000 000 0000"/>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="field">
+              <label for="toAddress">Client Address</label>
+              <input type="text" id="toAddress" placeholder="456 Client Ave, City"/>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 02 Line Items -->
+      <div class="panel">
+        <div class="panel-header"><span>02 /</span> Line Items</div>
+        <div class="panel-body">
+
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th class="col-desc">Description</th>
+                <th class="col-qty">Qty</th>
+                <th class="col-price">Unit Price</th>
+                <th class="col-total">Total</th>
+                <th class="col-action"></th>
+              </tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+          </table>
+
+          <button class="add-line-btn" id="addItemBtn">+ Add Line Item</button>
+
+          <p class="section-title">Tax &amp; Discounts</p>
+          <div class="settings-row">
+            <div class="field">
+              <label for="discount">Discount (%)</label>
+              <input type="number" id="discount" value="0" min="0" max="100" step="0.5"/>
+            </div>
+            <div class="field">
+              <label for="taxRate">Tax Rate (%)</label>
+              <input type="number" id="taxRate" value="0" min="0" max="100" step="0.5"/>
+            </div>
+            <div class="field">
+              <label for="shipping">Shipping</label>
+              <input type="number" id="shipping" value="0" min="0" step="0.01"/>
+            </div>
+          </div>
+
+          <div class="totals-block">
+            <div class="total-row">
+              <span class="total-label">Subtotal</span>
+              <span class="total-value" id="subtotalDisplay">$0.00</span>
+            </div>
+            <div class="total-row">
+              <span class="total-label">Discount</span>
+              <span class="total-value" id="discountDisplay">-$0.00</span>
+            </div>
+            <div class="total-row">
+              <span class="total-label">Tax</span>
+              <span class="total-value" id="taxDisplay">$0.00</span>
+            </div>
+            <div class="total-row">
+              <span class="total-label">Shipping</span>
+              <span class="total-value" id="shippingDisplay">$0.00</span>
+            </div>
+            <div class="total-row grand">
+              <span class="total-label">Total Due</span>
+              <span class="total-value" id="grandDisplay">$0.00</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 03 Notes & Terms -->
+      <div class="panel">
+        <div class="panel-header"><span>03 /</span> Notes &amp; Terms</div>
+        <div class="panel-body">
+          <div class="field field-mb">
+            <label for="notes">Notes / Payment Instructions</label>
+            <textarea id="notes" placeholder="Thank you for your business! Payment due within 30 days."></textarea>
+          </div>
+          <div class="field">
+            <label for="terms">Terms &amp; Conditions</label>
+            <textarea id="terms" placeholder="Late payments subject to 1.5% monthly interest."></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── PREVIEW COLUMN ── -->
+    <div class="preview-wrap">
+
+      <div class="preview-header-bar">
+        <span class="preview-header-icon">&#9672;</span> Live Preview
+      </div>
+
+      <div class="invoice-preview">
+        <div class="preview-top">
+          <div class="preview-inv-label">Invoice</div>
+          <div class="preview-inv-number" id="pNumber">INV-0001</div>
+          <div class="preview-from-to">
+            <div class="preview-party">
+              <div class="preview-party-label">From</div>
+              <div class="preview-party-name" id="pFromName">Your Company</div>
+              <div class="preview-party-detail" id="pFromDetail">&mdash;</div>
+            </div>
+            <div class="preview-party">
+              <div class="preview-party-label">Bill To</div>
+              <div class="preview-party-name" id="pToName">Client Name</div>
+              <div class="preview-party-detail" id="pToDetail">&mdash;</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-body">
+          <div class="preview-meta">
+            <div class="preview-meta-item">
+              <div class="preview-meta-label">Date</div>
+              <div class="preview-meta-value" id="pDate">&mdash;</div>
+            </div>
+            <div class="preview-meta-item">
+              <div class="preview-meta-label">Due Date</div>
+              <div class="preview-meta-value" id="pDue">&mdash;</div>
+            </div>
+          </div>
+
+          <table class="preview-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th class="text-right">Qty</th>
+                <th class="text-right">Price</th>
+                <th class="text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody id="pItems"></tbody>
+          </table>
+
+          <div class="preview-totals">
+            <div class="preview-total-row"><span>Subtotal</span><span id="pSub">$0.00</span></div>
+            <div class="preview-total-row"><span>Discount</span><span id="pDisc">-$0.00</span></div>
+            <div class="preview-total-row"><span>Tax</span><span id="pTax">$0.00</span></div>
+            <div class="preview-total-row"><span>Shipping</span><span id="pShip">$0.00</span></div>
+            <div class="preview-total-row grand">
+              <span>Total Due</span>
+              <span id="pGrand">$0.00</span>
+            </div>
+          </div>
+
+          <div class="preview-note" id="pNote"></div>
+        </div>
+
+        <div class="preview-footer-bar"></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" id="resetBtn">&#8635; Reset</button>
+        <button class="btn btn-primary" id="downloadBtn">&#8595; Download PDF</button>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>

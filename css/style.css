@@ -1,0 +1,454 @@
+/* ==============================================
+   style.css — App layout, form, and UI styles
+   ============================================== */
+
+/* === CSS VARIABLES === */
+:root {
+  --ink:       #0d0d0d;
+  --paper:     #f7f4ef;
+  --cream:     #ede9e1;
+  --accent:    #c84b2f;
+  --accent2:   #2f6bc8;
+  --muted:     #8a8478;
+  --border:    #d5d0c5;
+  --white:     #ffffff;
+  --success:   #2a7a4b;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --transition: 0.2s ease;
+}
+
+/* === RESET === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* === BASE === */
+body {
+  font-family: 'DM Mono', monospace;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* === APP HEADER === */
+.app-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-dot {
+  color: var(--accent);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-tag {
+  font-size: 0.65rem;
+  background: var(--accent);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: #e8f5ee;
+  color: var(--success);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+}
+
+/* === LAYOUT === */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 32px;
+  align-items: start;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* === PANEL === */
+.panel {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.panel-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 24px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-header span {
+  color: var(--accent);
+}
+
+.panel-body {
+  padding: 24px;
+}
+
+/* === SECTION TITLES & DIVIDERS === */
+.section-title {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.divider {
+  height: 1px;
+  background: var(--cream);
+  margin: 20px 0;
+}
+
+/* === FORM ROWS === */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-row.single {
+  grid-template-columns: 1fr;
+}
+
+/* === FIELDS === */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field-mb {
+  margin-bottom: 12px;
+}
+
+/* === LABELS === */
+label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+/* === FORM CONTROLS === */
+input,
+select,
+textarea {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.82rem;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  color: var(--ink);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    background var(--transition);
+  outline: none;
+  width: 100%;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 3px rgba(47, 107, 200, 0.1);
+  background: var(--white);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 64px;
+}
+
+/* === LINE ITEMS TABLE === */
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+
+.items-table thead {
+  background: var(--cream);
+}
+
+.items-table th {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-align: left;
+  padding: 8px;
+}
+
+.items-table th.col-qty,
+.items-table th.col-price,
+.items-table th.col-total {
+  text-align: right;
+}
+
+.col-desc   { width: 40%; }
+.col-qty    { width: 12%; }
+.col-price  { width: 18%; }
+.col-total  { width: 18%; }
+.col-action { width: 7%;  }
+
+.items-table td {
+  padding: 5px 4px;
+  vertical-align: middle;
+}
+
+.items-table td input {
+  padding: 7px 9px;
+  font-size: 0.78rem;
+}
+
+.items-table td input[type="number"] {
+  text-align: right;
+}
+
+.line-total {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink);
+  text-align: right;
+  padding-right: 6px;
+  white-space: nowrap;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+  line-height: 1;
+}
+
+.remove-btn:hover {
+  color: var(--accent);
+  background: #fdf0ed;
+}
+
+/* === ADD LINE BUTTON === */
+.add-line-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: none;
+  border: 1.5px dashed var(--border);
+  color: var(--muted);
+  padding: 9px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  width: 100%;
+  transition: all var(--transition);
+  margin-bottom: 20px;
+}
+
+.add-line-btn:hover {
+  border-color: var(--accent2);
+  color: var(--accent2);
+  background: rgba(47, 107, 200, 0.04);
+}
+
+/* === SETTINGS ROW === */
+.settings-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+/* === TOTALS BLOCK === */
+.totals-block {
+  background: var(--cream);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 0.8rem;
+}
+
+.total-row.grand {
+  border-top: 2px solid var(--ink);
+  margin-top: 8px;
+  padding-top: 12px;
+}
+
+.total-row.grand .total-label {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+}
+
+.total-row.grand .total-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  color: var(--accent);
+}
+
+.total-label {
+  color: var(--muted);
+}
+
+.total-value {
+  font-weight: 500;
+}
+
+/* === ACTION BUTTONS === */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 11px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition);
+  font-weight: 500;
+  flex: 1;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #a83a20;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(200, 75, 47, 0.3);
+}
+
+.btn-secondary {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn-secondary:hover {
+  background: #2a2a2a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* === UTILITIES === */
+.text-right { text-align: right; }
+.text-muted  { color: var(--muted); }
+
+/* === RESPONSIVE === */
+@media (max-width: 860px) {
+  .container {
+    grid-template-columns: 1fr;
+    padding: 24px 16px;
+  }
+
+  .preview-wrap {
+    position: static !important;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .app-header {
+    padding: 14px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-row {
+    grid-template-columns: 1fr;
+  }
+
+  .app-logo {
+    font-size: 1.1rem;
+  }
+}
